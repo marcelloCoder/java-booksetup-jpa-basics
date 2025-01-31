@@ -14,13 +14,14 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode
+@Builder
 public class Autor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    private  String nome;
+    private String nome;
 
     @Temporal(TemporalType.DATE)
     private Date data_nascimento;

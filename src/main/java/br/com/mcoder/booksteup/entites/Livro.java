@@ -13,11 +13,12 @@ import java.util.Date;
 @Getter
 @Setter
 @EqualsAndHashCode
+@Builder
 public class Livro {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String titulo;
 
