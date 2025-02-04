@@ -1,8 +1,6 @@
 package br.com.mcoder.booksteup.controller;
 
 import br.com.mcoder.booksteup.dto.LivroDTO;
-import br.com.mcoder.booksteup.entites.Livro;
-import br.com.mcoder.booksteup.repository.LivroRepository;
 import br.com.mcoder.booksteup.service.LivroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -23,9 +23,10 @@ public class Livro {
     private String titulo;
 
     @Temporal(TemporalType.DATE)
-    private Date ano_publicacao;
+    @Column(name = "ano_publicacao")
+    private Date anoPublicacao;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // <-- Lazy significa que o autor só será carregado quando for acessado
     @JoinColumn(name = "autor_id")
     private Autor autor;
 }
