@@ -3,7 +3,6 @@ package br.com.mcoder.booksteup.service;
 import br.com.mcoder.booksteup.dto.AutorDTO;
 import br.com.mcoder.booksteup.entites.Autor;
 import br.com.mcoder.booksteup.repository.AutorRepository;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,4 +34,9 @@ public class AutorService {
         log.info("TODOS AUTORES BUSCADOS COM SUCESSO!");
         return autorList.stream().map(x -> new AutorDTO(x)).toList();
     }
+
+   /* @Transactional
+    public AutorDTO insert(){
+
+    }*/
 }
