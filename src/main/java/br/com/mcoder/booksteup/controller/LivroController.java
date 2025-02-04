@@ -5,10 +5,7 @@ import br.com.mcoder.booksteup.entites.Livro;
 import br.com.mcoder.booksteup.repository.LivroRepository;
 import br.com.mcoder.booksteup.service.LivroService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +25,11 @@ public class LivroController {
     @GetMapping
     public List<LivroDTO> getAll() {
         return livroService.findAll();
+    }
+
+    @PostMapping
+    public LivroDTO insert(@RequestBody LivroDTO livroDTO){
+        livroDTO = livroService.insert(livroDTO);
+        return livroDTO;
     }
 }

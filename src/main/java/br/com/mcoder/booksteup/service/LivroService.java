@@ -25,14 +25,17 @@ public class LivroService {
         if (result.isPresent()){
             Livro livro = result.get();
             LivroDTO livroDTO = new LivroDTO(livro);
+            log.info("LIVRO BUSCADO COM SUCESSO");
             return livroDTO;
         }
+        log.info("LIVRO NAO ENCONTRADO");
         return null;
     }
 
     @Transactional(readOnly = true)
     public List<LivroDTO> findAll(){
         List<Livro> livrosDTO = livroRepository.findAll();
+        log.info("TODOS OS LIVROS FORAM BUSCADOS COM SUCESSO");
         return livrosDTO.stream().map(x -> new LivroDTO(x)).toList();
     }
 
@@ -40,7 +43,6 @@ public class LivroService {
         Livro livro = Livro.builder()
                 .titulo(livroDTO.titulo())
                 .ano_publicacao(livroDTO.anoPublicacao())
-                //.autor(livroDTO.autorNome())
                 .build();
         livroRepository.save(livro);
         log.info("LIVRO CRIADO COM SUCESSO!!");
