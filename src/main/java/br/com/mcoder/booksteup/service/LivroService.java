@@ -28,7 +28,6 @@ public class LivroService {
     public LivroDTO findById(Long id) {
         Optional<Livro> result = livroRepository.findById(id);
 
-
         if (result.isPresent()) {
             Livro livro = result.get();
 
@@ -47,6 +46,7 @@ public class LivroService {
         return livrosDTO.stream().map(x -> new LivroDTO(x)).toList();
     }
 
+    @Transactional
     public LivroDTO insert(LivroDTO livroDTO) {
         Autor autor = autorRepository.findByNome(livroDTO.autorNome())
                 .orElseGet(() -> {
