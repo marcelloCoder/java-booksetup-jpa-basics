@@ -24,7 +24,7 @@ public class Autor {
     private String nome;
 
     @Temporal(TemporalType.DATE)
-    private Date data_nascimento;
+    private Date dataNascimento;
 
     @OneToMany(mappedBy = "autor")
     private List<Livro> livros = new ArrayList<>();

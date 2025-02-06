@@ -34,9 +34,24 @@ public class AutorService {
         log.info("TODOS AUTORES BUSCADOS COM SUCESSO!");
         return autorList.stream().map(x -> new AutorDTO(x)).toList();
     }
-
-   /* @Transactional
-    public AutorDTO insert(){
+    @Transactional
+   /* public AutorDTO insert(AutorDTO autorDTO){
+        Autor autor = Autor.builder()
+                .nome(autorDTO.nome())
+                .dataNascimento(autorDTO.dataNascimento())
+                .build();
+        autorRepository.save(autor);
+        log.info("NOVO AUTOR SALVO COM SUCESSO!");
 
     }*/
+
+    private AutorDTO copy(Autor autor, AutorDTO autorDTO){
+        return new AutorDTO(
+                autor.getId(),
+                autor.getNome(),
+                autor.getDataNascimento(),
+                autorDTO.livros()
+        );
+    }
+
 }

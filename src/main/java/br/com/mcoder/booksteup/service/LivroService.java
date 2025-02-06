@@ -1,5 +1,6 @@
 package br.com.mcoder.booksteup.service;
 
+import br.com.mcoder.booksteup.dto.AutorDTO;
 import br.com.mcoder.booksteup.dto.LivroDTO;
 import br.com.mcoder.booksteup.entites.Autor;
 import br.com.mcoder.booksteup.entites.Livro;
@@ -49,11 +50,7 @@ public class LivroService {
     @Transactional
     public LivroDTO insert(LivroDTO livroDTO) {
         Autor autor = autorRepository.findByNome(livroDTO.autorNome())
-                .orElseGet(() -> {
-                    Autor novoAutor = new Autor();
-                    novoAutor.setNome(livroDTO.autorNome());
-                    return autorRepository.save(novoAutor);
-                });
+                .orElseThrow(() -> new RuntimeException("Autor não encontrado: " + livroDTO.autorNome()));
 
         Livro livro = Livro.builder()
                 .titulo(livroDTO.titulo())
