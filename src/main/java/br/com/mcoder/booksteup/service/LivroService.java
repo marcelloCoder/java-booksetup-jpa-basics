@@ -19,11 +19,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class LivroService {
-    @Autowired
-    private LivroRepository livroRepository;
 
-    @Autowired
-    private AutorRepository autorRepository;
+    private final LivroRepository livroRepository;
+
+    private final AutorRepository autorRepository;
 
     @Transactional(readOnly = true)
     public LivroDTO findById(Long id) {

@@ -17,11 +17,10 @@ import java.util.Optional;
 @Slf4j
 public class AutorService {
 
-    @Autowired
     private final AutorRepository autorRepository;
 
     @Transactional(readOnly = true)
-    public AutorDTO findByName(String name){
+    public AutorDTO findByName(String name) {
         Optional<Autor> result = autorRepository.findByNome(name);
         Autor autor = result.get();
         AutorDTO autorDTO = new AutorDTO(autor);
@@ -29,28 +28,29 @@ public class AutorService {
     }
 
     @Transactional(readOnly = true)
-    public List<AutorDTO> findAll(){
+    public List<AutorDTO> findAll() {
         List<Autor> autorList = autorRepository.findAll();
         log.info("TODOS AUTORES BUSCADOS COM SUCESSO!");
         return autorList.stream().map(x -> new AutorDTO(x)).toList();
     }
+
     @Transactional
-   /* public AutorDTO insert(AutorDTO autorDTO){
+    public AutorDTO insert(AutorDTO autorDTO) {
         Autor autor = Autor.builder()
                 .nome(autorDTO.nome())
                 .dataNascimento(autorDTO.dataNascimento())
                 .build();
         autorRepository.save(autor);
         log.info("NOVO AUTOR SALVO COM SUCESSO!");
+        AutorDTO result = copy(autor, autorDTO);
+        return result;
+    }
 
-    }*/
-
-    private AutorDTO copy(Autor autor, AutorDTO autorDTO){
+    private AutorDTO copy(Autor autor, AutorDTO autorDTO) {
         return new AutorDTO(
                 autor.getId(),
                 autor.getNome(),
-                autor.getDataNascimento(),
-                autorDTO.livros()
+                autor.getDataNascimento()
         );
     }
 
