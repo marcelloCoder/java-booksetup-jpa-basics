@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class AutorService {
     public List<AutorDTO> findAll() {
         List<Autor> autorList = autorRepository.findAll();
         log.info("TODOS AUTORES BUSCADOS COM SUCESSO!");
-        return autorList.stream().map(x -> new AutorDTO(x)).toList();
+        return autorList.stream().map(x -> new AutorDTO(x)).collect(Collectors.toList());
     }
 
     @Transactional

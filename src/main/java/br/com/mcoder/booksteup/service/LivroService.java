@@ -6,9 +6,11 @@ import br.com.mcoder.booksteup.entites.Autor;
 import br.com.mcoder.booksteup.entites.Livro;
 import br.com.mcoder.booksteup.repository.AutorRepository;
 import br.com.mcoder.booksteup.repository.LivroRepository;
+import br.com.mcoder.booksteup.service.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,23 +29,19 @@ public class LivroService {
     @Transactional(readOnly = true)
     public LivroDTO findById(Long id) {
         Optional<Livro> result = livroRepository.findById(id);
-
-        if (result.isPresent()) {
-            Livro livro = result.get();
-
-            LivroDTO livroDTO = new LivroDTO(livro);
-            log.info("LIVRO BUSCADO COM SUCESSO");
-            return livroDTO;
-        }
-        log.info("LIVRO NAO ENCONTRADO");
-        return null;
+        Livro livro = result.orElseThrow(
+                () -> new EntityNotFoundException("Entidade não encontrada!")
+        );
+        LivroDTO livroDTO = new LivroDTO(livro);
+        log.info("LIVRO BUSCADO COM SUCESSO");
+        return livroDTO;
     }
 
     @Transactional(readOnly = true)
-    public List<LivroDTO> findAll() {
-        List<Livro> livrosDTO = livroRepository.findAll();
+    public Page<LivroDTO> findAll(Pageable pageable) {
+        Page<Livro> livrosPage = livroRepository.findAll(pageable);
         log.info("TODOS OS LIVROS FORAM BUSCADOS COM SUCESSO");
-        return livrosDTO.stream().map(x -> new LivroDTO(x)).toList();
+        return livrosPage.map(x -> new LivroDTO(x));
     }
 
     @Transactional

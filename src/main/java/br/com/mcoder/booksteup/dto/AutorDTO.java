@@ -11,7 +11,7 @@ public record AutorDTO(
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
         Date dataNascimento) {
 
-    // Construtor secundário para evitar problemas no Spring
+    // Construtor personalizado
     public AutorDTO(Autor entity) {
         this(entity.getId(), entity.getNome(), entity.getDataNascimento());
     }
