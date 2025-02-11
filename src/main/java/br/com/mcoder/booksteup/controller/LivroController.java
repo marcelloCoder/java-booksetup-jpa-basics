@@ -9,6 +9,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 
 @RestController
@@ -30,8 +33,10 @@ public class LivroController {
     }
 
     @PostMapping
-    public LivroDTO insert(@RequestBody LivroDTO livroDTO) {
+    public ResponseEntity<LivroDTO> insert(@RequestBody LivroDTO livroDTO) {
         livroDTO = livroService.insert(livroDTO);
-        return livroDTO;
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(livroDTO.id()).toUri();
+        return ResponseEntity.created(uri).body(livroDTO);
     }
 }
