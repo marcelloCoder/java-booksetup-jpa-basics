@@ -7,6 +7,7 @@ import br.com.mcoder.booksteup.entites.Livro;
 import br.com.mcoder.booksteup.repository.AutorRepository;
 import br.com.mcoder.booksteup.repository.LivroRepository;
 import br.com.mcoder.booksteup.service.exceptions.EntityNotFoundException;
+import br.com.mcoder.booksteup.service.exceptions.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -47,7 +48,7 @@ public class LivroService {
     @Transactional
     public LivroDTO insert(LivroDTO livroDTO) {
         Autor autor = autorRepository.findByNome(livroDTO.autorNome())
-                .orElseThrow(() -> new RuntimeException("Autor não encontrado: " + livroDTO.autorNome()));
+                .orElseThrow(() -> new NoSuchElementException("Autor não existe: " + livroDTO.autorNome()));
 
         Livro livro = Livro.builder()
                 .titulo(livroDTO.titulo())

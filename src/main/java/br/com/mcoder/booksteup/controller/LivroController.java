@@ -27,7 +27,7 @@ public class LivroController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<LivroDTO>> getAll(@PageableDefault(size = 3)Pageable pageable) {
+    public ResponseEntity<Page<LivroDTO>> getAll(@PageableDefault(size = 10)Pageable pageable) {
         Page<LivroDTO> livroDTOPage = livroService.findAll(pageable);
         return ResponseEntity.ok().body(livroDTOPage);
     }

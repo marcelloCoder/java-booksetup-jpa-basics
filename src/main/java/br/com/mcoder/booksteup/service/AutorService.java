@@ -3,6 +3,7 @@ package br.com.mcoder.booksteup.service;
 import br.com.mcoder.booksteup.dto.AutorDTO;
 import br.com.mcoder.booksteup.entites.Autor;
 import br.com.mcoder.booksteup.repository.AutorRepository;
+import br.com.mcoder.booksteup.service.exceptions.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,20 @@ public class AutorService {
     @Transactional(readOnly = true)
     public AutorDTO findByName(String name) {
         Optional<Autor> result = autorRepository.findByNome(name);
-        Autor autor = result.get();
+        Autor autor = result.orElseThrow(
+                () -> new NoSuchElementException("Autor com esse nome não existe")
+        );
         AutorDTO autorDTO = new AutorDTO(autor);
         return autorDTO;
+    }
+
+    @Transactional(readOnly = true)
+    public List<AutorDTO> findByNomeAproximado(String name) {
+        List<Autor> autores = autorRepository.findByNomeAproximado(name);
+        if (autores.isEmpty()) {
+            throw new NoSuchElementException("Nenhum autor encontrado com esse nome");
+        }
+        return autores.stream().map(AutorDTO::new).toList();
     }
 
     @Transactional(readOnly = true)

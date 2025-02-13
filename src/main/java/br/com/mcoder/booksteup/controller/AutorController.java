@@ -19,6 +19,10 @@ public class AutorController {
         AutorDTO result = autorService.findByName(name);
         return result;
     }
+    @GetMapping(value = "/search/{name}")
+    public List<AutorDTO> findByNomeAproximado(@PathVariable String name) {
+        return autorService.findByNomeAproximado(name);
+    }
 
     @GetMapping
     public List<AutorDTO> getAll() {

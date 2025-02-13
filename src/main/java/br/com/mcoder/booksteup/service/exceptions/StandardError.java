@@ -1,9 +1,6 @@
 package br.com.mcoder.booksteup.service.exceptions;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -12,6 +9,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class StandardError implements Serializable {
     private Instant timestamp;
     private Integer status;
