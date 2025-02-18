@@ -3,6 +3,7 @@ package br.com.mcoder.booksteup.entites;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -24,7 +25,7 @@ public class Livro {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "ano_publicacao")
-    private Date anoPublicacao;
+    private LocalDate anoPublicacao;
 
     @ManyToOne(fetch = FetchType.LAZY) // <-- Lazy significa que o autor só será carregado quando for acessado
     @JoinColumn(name = "autor_id")

@@ -14,26 +14,52 @@ import java.time.Instant;
 public class ResourceExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<StandardError> entityNotFound(EntityNotFoundException e, HttpServletRequest request){
+    public ResponseEntity<StandardError> entityNotFound(EntityNotFoundException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
         StandardError error = new StandardError();
         error.setTimestamp(Instant.now());
-        error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.setStatus(status.value());
         error.setError("Resource not found");
         error.setMessage(e.getMessage());
         error.setPath(request.getRequestURI());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        return ResponseEntity.status(status).body(error);
     }
 
     @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<StandardError> noSuchElement(NoSuchElementException e, HttpServletRequest request){
+    public ResponseEntity<StandardError> noSuchElement(NoSuchElementException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
         StandardError error = StandardError.builder()
                 .timestamp(Instant.now())
-                .status(HttpStatus.NOT_FOUND.value())
+                .status(status.value())
                 .error("Element not found")
                 .message(e.getMessage())
                 .path(request.getRequestURI())
                 .build();
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        return ResponseEntity.status(status).body(error);
+    }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<StandardError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        StandardError error = StandardError.builder()
+                .timestamp(Instant.now())
+                .status(status.value())
+                .error("Element not found")
+                .message(e.getMessage())
+                .path(request.getRequestURI())
+                .build();
+        return ResponseEntity.status(status).body(error);
+    }
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<StandardError> dbException(DatabaseException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError error = StandardError.builder()
+                .timestamp(Instant.now())
+                .status(status.value())
+                .error("Element not found")
+                .message(e.getMessage())
+                .path(request.getRequestURI())
+                .build();
+        return ResponseEntity.status(status).body(error);
     }
 }

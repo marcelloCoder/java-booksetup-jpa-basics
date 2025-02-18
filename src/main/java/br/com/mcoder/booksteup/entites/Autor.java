@@ -3,6 +3,7 @@ package br.com.mcoder.booksteup.entites;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +25,7 @@ public class Autor {
     private String nome;
 
     @Temporal(TemporalType.DATE)
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
 
     @OneToMany(mappedBy = "autor")
     private List<Livro> livros = new ArrayList<>();

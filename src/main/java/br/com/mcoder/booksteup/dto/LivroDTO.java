@@ -3,12 +3,13 @@ package br.com.mcoder.booksteup.dto;
 import br.com.mcoder.booksteup.entites.Livro;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public record LivroDTO(Long id,
                        String titulo,
                        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-                       Date anoPublicacao,
+                       LocalDate anoPublicacao,
                        String autorNome) {
 
     // Construtor personalizado

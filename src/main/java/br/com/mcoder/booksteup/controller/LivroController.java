@@ -39,4 +39,16 @@ public class LivroController {
                 .buildAndExpand(livroDTO.id()).toUri();
         return ResponseEntity.created(uri).body(livroDTO);
     }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<LivroDTO> update(@PathVariable Long id, @RequestBody LivroDTO livroDTO) {
+        livroDTO = livroService.update(id, livroDTO);
+        return ResponseEntity.ok(livroDTO);
+    }
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        livroService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
