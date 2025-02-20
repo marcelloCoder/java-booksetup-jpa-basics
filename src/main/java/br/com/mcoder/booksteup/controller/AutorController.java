@@ -2,11 +2,13 @@ package br.com.mcoder.booksteup.controller;
 
 import br.com.mcoder.booksteup.dto.AutorDTO;
 import br.com.mcoder.booksteup.service.AutorService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -15,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/autores")
+@Validated
 public class AutorController {
 
     @Autowired
@@ -34,7 +37,7 @@ public class AutorController {
 
 
     @PostMapping
-    public ResponseEntity<AutorDTO> insert(@RequestBody AutorDTO autorDTO) {
+    public ResponseEntity<AutorDTO> insert(@Valid @RequestBody AutorDTO autorDTO) {
         AutorDTO result = autorService.insert(autorDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(result.id()).toUri();

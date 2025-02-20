@@ -5,10 +5,7 @@ import br.com.mcoder.booksteup.entites.Autor;
 import br.com.mcoder.booksteup.entites.Livro;
 import br.com.mcoder.booksteup.repository.AutorRepository;
 import br.com.mcoder.booksteup.repository.LivroRepository;
-import br.com.mcoder.booksteup.service.exceptions.DatabaseException;
-import br.com.mcoder.booksteup.service.exceptions.EntityNotFoundException;
-import br.com.mcoder.booksteup.service.exceptions.NoSuchElementException;
-import br.com.mcoder.booksteup.service.exceptions.ResourceNotFoundException;
+import br.com.mcoder.booksteup.service.exceptions.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -46,7 +43,10 @@ public class LivroService {
 
     @Transactional
     public LivroDTO insert(LivroDTO livroDTO) {
-        Autor autor = autorRepository.findByNome(livroDTO.autorNome()).orElseThrow(() -> new NoSuchElementException("Autor não existe: " + livroDTO.autorNome()));
+        Autor autor = autorRepository.findByNome(
+                        livroDTO.autorNome())
+                .orElseThrow(() -> new NoSuchElementException("Autor não existe: " + livroDTO.autorNome())
+                );
 
         Livro livro = Livro.builder().titulo(livroDTO.titulo()).anoPublicacao(livroDTO.anoPublicacao()).autor(autor).build();
         livroRepository.save(livro);

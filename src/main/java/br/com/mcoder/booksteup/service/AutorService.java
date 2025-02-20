@@ -13,10 +13,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,15 +27,12 @@ public class AutorService {
 
     @Transactional(readOnly = true)
     public List<AutorDTO> findByNomeAproximado(String name) {
-        try {
-            List<Autor> autores = autorRepository.findByNomeAproximado(name);
-            if (autores.isEmpty()) {
-                throw new NoSuchElementException("Nenhum autor encontrado com esse nome");
-            }
-            return autores.stream().map(x -> new AutorDTO(x)).toList();
-        }catch (NoSuchElementException e){
+        List<Autor> autores = autorRepository.findByNomeAproximado(name);
+        if (autores.isEmpty()) {
             throw new NoSuchElementException("Nenhum autor encontrado com esse nome");
         }
+        return autores.stream().map(x -> new AutorDTO(x)).toList();
+
 
     }
 
@@ -48,7 +45,10 @@ public class AutorService {
 
     @Transactional
     public AutorDTO insert(AutorDTO autorDTO) {
-        Autor autor = Autor.builder().nome(autorDTO.nome()).dataNascimento(autorDTO.dataNascimento()).build();
+        Autor autor = Autor.builder()
+                .nome(autorDTO.nome())
+                .dataNascimento(autorDTO.dataNascimento())
+                .build();
         autorRepository.save(autor);
         log.info("NOVO AUTOR SALVO COM SUCESSO!");
         AutorDTO result = copy(autor, autorDTO);
@@ -62,7 +62,8 @@ public class AutorService {
             autor.setNome(autorDTO.nome());
             autor.setDataNascimento(autorDTO.dataNascimento());
             autorRepository.save(autor);
-            log.info("AUTOR ATUALIZADO COM SUCESSO!");
+            log.info("AUTOR ATUALIZADO COM SUCESSO! ID: {}", autor.getId());
+
             return new AutorDTO(autor);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Recurso não encontrado");
@@ -70,7 +71,7 @@ public class AutorService {
 
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
         if (!autorRepository.existsById(id)) {
             throw new NoSuchElementException("Autor com ID " + id + " não encontrado");
@@ -79,7 +80,7 @@ public class AutorService {
             autorRepository.deleteById(id);
             log.info("AUTOR DELETADO COM SUCESSO!");
         } catch (DataIntegrityViolationException e) {
-            throw new DatabaseException("Falha na integridade dos dados: não é possível deletar o autor com ID " + id);
+            throw new DatabaseException("Erro de integridade: O autor com ID " + id + " está vinculado a outros registros e não pode ser deletado.");
         }
     }
 
