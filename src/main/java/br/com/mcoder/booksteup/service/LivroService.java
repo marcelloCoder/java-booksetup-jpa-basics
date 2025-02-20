@@ -1,6 +1,5 @@
 package br.com.mcoder.booksteup.service;
 
-import br.com.mcoder.booksteup.dto.AutorDTO;
 import br.com.mcoder.booksteup.dto.LivroDTO;
 import br.com.mcoder.booksteup.entites.Autor;
 import br.com.mcoder.booksteup.entites.Livro;
@@ -18,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,9 +31,7 @@ public class LivroService {
     @Transactional(readOnly = true)
     public LivroDTO findById(Long id) {
         Optional<Livro> result = livroRepository.findById(id);
-        Livro livro = result.orElseThrow(
-                () -> new EntityNotFoundException("Entidade não encontrada!")
-        );
+        Livro livro = result.orElseThrow(() -> new EntityNotFoundException("Entidade não encontrada!"));
         LivroDTO livroDTO = new LivroDTO(livro);
         log.info("LIVRO BUSCADO COM SUCESSO");
         return livroDTO;
@@ -50,14 +46,9 @@ public class LivroService {
 
     @Transactional
     public LivroDTO insert(LivroDTO livroDTO) {
-        Autor autor = autorRepository.findByNome(livroDTO.autorNome())
-                .orElseThrow(() -> new NoSuchElementException("Autor não existe: " + livroDTO.autorNome()));
+        Autor autor = autorRepository.findByNome(livroDTO.autorNome()).orElseThrow(() -> new NoSuchElementException("Autor não existe: " + livroDTO.autorNome()));
 
-        Livro livro = Livro.builder()
-                .titulo(livroDTO.titulo())
-                .anoPublicacao(livroDTO.anoPublicacao())
-                .autor(autor)
-                .build();
+        Livro livro = Livro.builder().titulo(livroDTO.titulo()).anoPublicacao(livroDTO.anoPublicacao()).autor(autor).build();
         livroRepository.save(livro);
         log.info("LIVRO CRIADO COM SUCESSO!!");
         LivroDTO copy = copy(livro, livroDTO);
@@ -70,8 +61,7 @@ public class LivroService {
         try {
             Livro livro = livroRepository.getReferenceById(id);
 
-            Autor autor = autorRepository.findByNome(livroDTO.autorNome())
-                    .orElseThrow(() -> new NoSuchElementException("Autor não existe: " + livroDTO.autorNome()));
+            Autor autor = autorRepository.findByNome(livroDTO.autorNome()).orElseThrow(() -> new NoSuchElementException("Autor não existe: " + livroDTO.autorNome()));
 
             livro.setTitulo(livroDTO.titulo());
             livro.setAnoPublicacao(livroDTO.anoPublicacao());
@@ -95,12 +85,8 @@ public class LivroService {
             throw new DatabaseException("Falha de integridade referencial");
         }
     }
+
     private LivroDTO copy(Livro livro, LivroDTO livroDTO) {
-        return new LivroDTO(
-                livro.getId(),
-                livro.getTitulo(),
-                livro.getAnoPublicacao(),
-                livroDTO.autorNome()
-        );
+        return new LivroDTO(livro.getId(), livro.getTitulo(), livro.getAnoPublicacao(), livroDTO.autorNome());
     }
 }

@@ -5,7 +5,6 @@ import br.com.mcoder.booksteup.service.LivroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +26,7 @@ public class LivroController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<LivroDTO>> getAll(@PageableDefault(size = 10)Pageable pageable) {
+    public ResponseEntity<Page<LivroDTO>> getAll(@PageableDefault(size = 10) Pageable pageable) {
         Page<LivroDTO> livroDTOPage = livroService.findAll(pageable);
         return ResponseEntity.ok().body(livroDTOPage);
     }
@@ -45,6 +44,7 @@ public class LivroController {
         livroDTO = livroService.update(id, livroDTO);
         return ResponseEntity.ok(livroDTO);
     }
+
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         livroService.delete(id);
