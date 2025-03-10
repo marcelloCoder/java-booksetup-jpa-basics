@@ -29,4 +29,10 @@ public class Autor {
 
     @OneToMany(mappedBy = "autor")
     private List<Livro> livros = new ArrayList<>();
+
+    public Autor(Long id, String nome, LocalDate dataNascimento){
+        this.id=id;
+        this.nome =nome;
+        this.dataNascimento=dataNascimento;
+    }
 }
