@@ -70,7 +70,7 @@ public class LivroServiceTest {
         Mockito.lenient().when(repository.existsById(existingId)).thenReturn(true);
         Mockito.lenient().when(repository.existsById(nonExistingId)).thenReturn(false);
         Mockito.lenient().when(repository.existsById(dependentId)).thenReturn(true);
-        Mockito.when(autorRepository.findByNome(livro.getAutor().getNome())).thenReturn(Optional.of(autor)); // <-- Mockando chamada ao AutorRepository
+        Mockito.when(autorRepository.findByNome(livro.getAutor().getNome())).thenReturn(Optional.of(autor)); // <-- Mockando chamada ao AutorRepositoryTest
     }
 
 
